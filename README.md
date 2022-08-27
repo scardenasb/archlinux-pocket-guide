@@ -19,6 +19,9 @@
   - [Create the file system table](#create-the-file-system-table-fstab)
   - [Set time zone](#set-time-zone)
   - [Set hardware clock](#set-hardware-clock)
+- [Localization](#localization)
+- [Network configuration](#network-configuration)
+- [Users and passwords](#users-and-passwords)
 
 <br></br>
 
@@ -149,7 +152,7 @@ ln -sF /usr/share/YOUR_REGION/YOUR_CITY /etc/localtime
 hwclock --systohc
 ```
 
-### Generate locale
+### Localization
 *Edit `/etc/locale.gen` (uncomment line)*
 ```bash
 vi /etc/locale.gen
@@ -164,4 +167,42 @@ locale-gen
 *if there is no `vi` installed, install vim or nano with `pacman -S vim_or_nano`*
 
 
-### Set hostname
+### Network configuration
+*Create the file `hostname` and write a line with your hostname (example archvm)*
+```bash
+vim /etc/hostname
+```
+
+*set hosts with*
+```bash
+vim /etc/hosts
+```
+
+*add this 3 lines, use tabs.*
+```
+127.0.0.1 localhost
+::1       localhost
+127.0.1.1 yourhostname.localdomain  yourhostname
+```
+
+## Users and passwords
+*Set the password to the root user*
+```bash
+passwd
+```
+
+*Create new user and set his password*
+```bash
+useradd user_name_you_want
+```
+
+```bash
+passwd user_name_you_want
+```
+
+*Check if this user is member of the wheel group (to let him use `sudo` instead of re-loggin as root)*
+```bash
+usermod -aG wheel user_name_you_want
+```
+
+*you can add more groups separated with commas and no spaces, like `usermod -aG wheel,storage,optical`*
