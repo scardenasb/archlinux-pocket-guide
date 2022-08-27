@@ -10,6 +10,8 @@
   - [Check boot mode](#check-boot-mode)
   - [Update system clock](#update-system-clock)
 - [Partition (fdisk)](#partition-fdisk)
+  - [Partition table](#partition-table)
+  - [Format partitions](#format-partitions)
 
 <br></br>
 
@@ -61,3 +63,25 @@ timedatectl status
 ```
 
 ## PARTITION (fdisk)
+### Partition table
+*You can see your disks with* 
+```bash
+fdisk -l
+```
+*Choose the one you want to format with*
+```bash
+fdisk /dev/your_chosen_disk
+```
+
+*Suggested partition table (UEFI With GPT)*
+
+| Type | Available size | Size            | Recomended |
+|------|:--------------:|:---------------:|:----------:|
+| EFI  | -              | 100MiB - 550Mib | 550Mib     |
+| SWAP | 2GB - 8GB      | Equal to RAM    | 2 * RAM    |
+|      | 8GB - 64GB     | > 4GB           | 1.5 * RAM  |
+|      | > 64GB         | > 4GB           | 1 * RAM    |
+| /    | -              | > 15GB          | > 50GB     |
+| HOME | -              | Remainder       | > /        |
+
+### Format partitions
