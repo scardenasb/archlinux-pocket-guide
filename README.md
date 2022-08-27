@@ -122,14 +122,14 @@ mount /dev/your_root_device /mnt
 ```
 *Mount*
 ### Pacstrap command
-*Run `pacstrap` command to install base system for arch onto recent /mnt mounted*
+*Run `pacstrap` command to install base system for arch onto recent mounted /mnt*
 
 ```bash
 pacstrap /mnt base linux linux-firmware
 ```
-- base: base package
-- linux: kernel
-- linux-firmware: firmware for common hardware
+> base: base package
+> linux: kernel
+> linux-firmware: firmware for common hardware
 
 ## Configure the system
 ### Create the file system table (fstab)
@@ -252,6 +252,31 @@ grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
 ```bash
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
+## Reboot
+```bash
+umount -R /mnt
+```
+> *-R to notice any busy partition*
+*and reboot with `reboot`*
 
 ## Environment
-*list of essentials programs to get a basic arch*
+### Network
+*network manager*
+```bash
+pacman -S networkmanager
+```
+
+*active networkmanager*
+```bash
+systemctl enable NetworkManager
+```
+
+### Graphic
+
+### Utils
+
+### Security
+
+### Develop
+
+### 
