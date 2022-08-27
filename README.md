@@ -13,6 +13,12 @@
   - [Partition table](#partition-table)
   - [Change partition types](#change-partition-types)
   - [Format partitions](#format-partitions)
+- [Mount partitions](#mount-partitions)
+  - [Pacstrap command](#pacstrap-command)
+- [Configure the system](#configure-the-system)
+  - [Create the file system table](#create-the-file-system-table-fstab)
+  - [Set time zone](#set-time-zone)
+  - [Set hardware clock](#set-hardware-clock)
 
 <br></br>
 
@@ -87,16 +93,75 @@ fdisk /dev/your_chosen_disk
 ### Change partition types
 *Types table GPT (GUUID)*
 
-| Type | Name             |
-|------|------------------|
-| EFI  | EFI SYSTEM       |
-| SWAP | Linux swap       |
-| /    | Linux filesystem |
-| HOME | Linux filesystem |
+| Type | Name                  |
+|------|-----------------------|
+| EFI  | EFI SYSTEM            |
+| SWAP | Linux swap            |
+| /    | Linux x86-64 root (/) |
+| HOME | Linux filesystem      |
 
 ### Format partitions
-| Name             | Format Type | Command                                                           |
-|------------------|:-----------:|:-----------------------------------------------------------------:|
-| EFI System       | FAT 32      | `mkfs.fat -F32 /dev/your_efi_device`                              |
-| Linux swap       | -           | `mkswap /dev/your_swap_device` and `swapon /dev/your_swap_device` |
-| Linux filesystem | ext4        | `mkfs.ext4 /dev/your_filesystem_device`                           |
+| Name                  | Format Type | Command                                                           |
+|-----------------------|:-----------:|:-----------------------------------------------------------------:|
+| EFI System            | FAT 32      | `mkfs.fat -F32 /dev/your_efi_device`                              |
+| Linux swap            | -           | `mkswap /dev/your_swap_device` and `swapon /dev/your_swap_device` |
+| Linux x86-64 root (/) | ext4        | `mkfs.ext4 /dev/your_root_device`                                 |
+| Linux filesystem      | ext4        | `mkfs.ext4 /dev/your_filesystem_device`                           |
+
+## Mount partitions
+*Mount root (/)*
+```bash
+mount /dev/your_root_device /mnt
+```
+*Mount*
+### Pacstrap command
+*Run `pacstrap` command to install base system for arch onto recent /mnt mounted*
+
+```bash
+pacstrap /mnt base linux linux-firmware
+```
+- base: base package
+- linux: kernel
+- linux-firmware: firmware for common hardware
+
+## Configure the system
+### Create the file system table (fstab)
+```bash
+genfstab -U /mnt >> /mnt/etc/fstab
+```
+### Set time zone
+*To get into de big mount*
+```bash
+arch-chroot /mnt
+```
+*To check de available zones*
+```bash
+ls /usr/share/zoneinfo
+```
+
+*To create the symlink*
+```bash
+ln -sF /usr/share/YOUR_REGION/YOUR_CITY /etc/localtime
+```
+
+### Set hardware clock
+```bash
+hwclock --systohc
+```
+
+### Generate locale
+*Edit `/etc/locale.gen` (uncomment line)*
+```bash
+vi /etc/locale.gen
+```
+*uncomment yours, for US ->*
+![image](https://user-images.githubusercontent.com/84429399/187018409-255ffffb-4cef-4de3-b013-ef4e11d72f02.png)
+
+```bash
+locale-gen
+```
+
+*if there is no `vi` installed, install vim or nano with `pacman -S vim_or_nano`*
+
+
+### Set hostname
