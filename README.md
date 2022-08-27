@@ -22,6 +22,10 @@
 - [Localization](#localization)
 - [Network configuration](#network-configuration)
 - [Users and passwords](#users-and-passwords)
+- [Boot config](#boot-loader)
+  - [Boot loader](#boot-loader)
+  - [Boot directory](#boot-directory)
+- [Environment](#environment)
 
 <br></br>
 
@@ -164,7 +168,7 @@ vi /etc/locale.gen
 locale-gen
 ```
 
-*if there is no `vi` installed, install vim or nano with `pacman -S vim_or_nano`*
+> *if there is no `vi` installed, install vim or nano with `pacman -S vim_or_nano`*
 
 
 ### Network configuration
@@ -200,9 +204,54 @@ useradd user_name_you_want
 passwd user_name_you_want
 ```
 
-*Check if this user is member of the wheel group (to let him use `sudo` instead of re-loggin as root)*
+*Set this user as member of the wheel group (to let him use `sudo` instead of re-loggin as root)*
 ```bash
 usermod -aG wheel user_name_you_want
 ```
 
-*you can add more groups separated with commas and no spaces, like `usermod -aG wheel,storage,optical`*
+> *you can add more groups separated with commas and no spaces, like `usermod -aG wheel,storage,optical`*
+
+*install `sudo` with*
+```bash
+pacman -S sudo
+```
+
+*allow in sudo config the wheel group.*
+```bash
+visudo
+```
+![image](https://user-images.githubusercontent.com/84429399/187020460-5e860d0c-d467-4f01-8a01-97cdc6ce7903.png)
+
+## Boot config
+### Boot loader
+*install a [boot loader](https://wiki.archlinux.org/title/Arch_boot_process#Boot_loader), in this case i choose grub*
+```bash
+sudo pacman -S grub
+```
+
+*an boot dependencies*
+```bash
+pacman -S efibootmgr dosfstools os-prober mtools
+```
+### Boot directory
+```bash
+mkdir /boot/EFI
+```
+*mount efi partition here*
+```bash
+mount /dev/your_efi_device /boot/EFI
+```
+
+### Install grub (to replace grub-legacy one)
+```bash
+grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
+```
+
+*make grub config file*
+
+```bash
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+## Environment
+*list of essentials programs to get a basic arch*
