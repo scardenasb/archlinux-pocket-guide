@@ -84,4 +84,19 @@ fdisk /dev/your_chosen_disk
 | /    | -              | > 15GB          | > 50GB     |
 | HOME | -              | Remainder       | > /        |
 
+*Types table GPT (GUUID)*
+
+| Type | Name             |
+|------|------------------|
+| EFI  | EFI SYSTEM       |
+| SWAP | Linux swap       |
+| /    | Linux filesystem |
+| HOME | Linux filesystem |
+
 ### Format partitions
+
+| Name             | Format Type | Command                                                           |
+|------------------|:-----------:|:-----------------------------------------------------------------:|
+| EFI System       | FAT 32      | `mkfs.fat -F32 /dev/your_efi_device`                              |
+| Linux swap       | -           | `mkswap /dev/your_swap_device` and `swapon /dev/your_swap_device` |
+| Linux filesystem | ext4        | `mkfs.ext4 /dev/your_filesystem_device`                           |
