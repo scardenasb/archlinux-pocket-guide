@@ -11,6 +11,7 @@
   - [Update system clock](#update-system-clock)
 - [Partition (fdisk)](#partition-fdisk)
   - [Partition table](#partition-table)
+  - [Change partition types](#change-partition-types)
   - [Format partitions](#format-partitions)
 
 <br></br>
@@ -74,7 +75,6 @@ fdisk /dev/your_chosen_disk
 ```
 
 *Suggested partition table (UEFI With GPT)*
-
 | Type | Available size | Size            | Recomended |
 |------|:--------------:|:---------------:|:----------:|
 | EFI  | -              | 100MiB - 550Mib | 550Mib     |
@@ -84,6 +84,7 @@ fdisk /dev/your_chosen_disk
 | /    | -              | > 15GB          | > 50GB     |
 | HOME | -              | Remainder       | > /        |
 
+### Change partition types
 *Types table GPT (GUUID)*
 
 | Type | Name             |
@@ -94,7 +95,6 @@ fdisk /dev/your_chosen_disk
 | HOME | Linux filesystem |
 
 ### Format partitions
-
 | Name             | Format Type | Command                                                           |
 |------------------|:-----------:|:-----------------------------------------------------------------:|
 | EFI System       | FAT 32      | `mkfs.fat -F32 /dev/your_efi_device`                              |
