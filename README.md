@@ -120,16 +120,24 @@ fdisk /dev/your_chosen_disk
 ```bash
 mount /dev/your_root_device /mnt
 ```
-*Mount*
+*Mount home*
+```bash
+mkdir /mnt/home
+mount /dev/your_home_device /mnt/home
+```
 ### Pacstrap command
 *Run `pacstrap` command to install base system for arch onto recent mounted /mnt*
 
 ```bash
-pacstrap /mnt base linux linux-firmware
+pacstrap /mnt base linux linux-firmware linux-headers
 ```
 > base: base package
-> linux: kernel
-> linux-firmware: firmware for common hardware
+>
+> linux: kernel `(can be linux-lts)`
+>
+> linux-firmware: firmware for common hardware `(can be linux-lts-firmware ?)`
+>
+> linux-headers `(can be linux-lts-headers)`
 
 ## Configure the system
 ### Create the file system table (fstab)
@@ -174,7 +182,12 @@ locale-gen
 ### Network configuration
 *Create the file `hostname` and write a line with your hostname (example archvm)*
 ```bash
-vim /etc/hostname
+vim /etc/hostname 
+```
+
+`same as`
+```bash
+hostnamectl set-hostname your_hostname
 ```
 
 *set hosts with*
@@ -229,7 +242,7 @@ visudo
 sudo pacman -S grub
 ```
 
-*an boot dependencies*
+*and boot dependencies*
 ```bash
 pacman -S efibootmgr dosfstools os-prober mtools
 ```
@@ -248,19 +261,21 @@ grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
 ```
 
 *make grub config file*
-
 ```bash
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
-## Reboot
+
+*Reboot*
 ```bash
+exit
 umount -R /mnt
+`shutdown now` or `reboot`
 ```
 > *-R to notice any busy partition*
-*and reboot with `reboot`*
+*and reboot with `reboot` or `shutdown now` in VM's*
 
-## Environment
-### Network
+# Environment
+## Network
 *network manager*
 ```bash
 pacman -S networkmanager
@@ -271,7 +286,79 @@ pacman -S networkmanager
 systemctl enable NetworkManager
 ```
 
-### Graphic
+## System
+**
+```bash
+vim /etc/
+```
+
+## Graphic
+### Video driver/configs
+*xorg-server*
+```bash
+pacman -S xorg-server
+```
+
+*Video driver for Intel or amd*
+```bash
+pacman -S mesa
+```
+
+*Video driver for Nvidia*
+```bash
+pacman -S nvidia `(for linux kernel)`
+pacman -S nvidia-lts `(for linux-lts kernel)`
+```
+
+*Video driver for Virtual Machine*
+```bash
+pacman -S virtualbox-guest-utils xf86-video-vmware
+```
+
+*Enable Vbox*
+```bash
+systemctl enable vboxservice
+```
+
+### Desktop environments
+**GNOME**
+```bash
+pacman -S gnome
+```
+*gnome tweaks*
+```bash
+pacman -S gnome-tweaks
+```
+
+*Enable gnome display manager so it will display log-in screen in the boot*
+```bash
+systemctl enable gdm
+```
+
+*Reboot*
+```bash
+`shutdown` now or `reboot`
+```
+> **IMPORTANT after reboot system**
+> *Re-config the system language in gnome desktop (It could say `Unspecified`)*
+
+**PLASMA**
+```bash
+pacman -S 
+```
+
+**XFCE**
+```bash
+pacman -S 
+```
+
+**MATE**
+```bash
+pacman -S 
+```
+
+
+
 
 ### Utils
 
