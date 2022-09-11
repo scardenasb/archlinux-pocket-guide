@@ -159,6 +159,11 @@ ls /usr/share/zoneinfo
 ln -sF /usr/share/YOUR_REGION/YOUR_CITY /etc/localtime
 ```
 
+*Enable service to syncronize timezone*
+```bash
+systemctl enable systemd-timesyncd
+```
+
 ### Set hardware clock
 ```bash
 hwclock --systohc
@@ -201,6 +206,14 @@ vim /etc/hosts
 ::1       localhost
 127.0.1.1 yourhostname.localdomain  yourhostname
 ```
+
+### Enable boot configuration
+```bash
+vim /etc/mkinitcpio.conf
+```
+![image](https://user-images.githubusercontent.com/84429399/189509178-1d77a29d-3b85-4dda-8010-62c02a323080.png)
+
+> *add `lvm2` between those words*
 
 ## Users and passwords
 *Set the password to the root user*
@@ -287,10 +300,9 @@ systemctl enable NetworkManager
 ```
 
 ## System
-**
-```bash
-vim /etc/
-```
+
+
+
 
 ## Graphic
 ### Video driver/configs
@@ -344,7 +356,7 @@ systemctl enable gdm
 
 **PLASMA**
 ```bash
-pacman -S 
+pacman -S plasma-meta kde-applications
 ```
 
 **XFCE**
